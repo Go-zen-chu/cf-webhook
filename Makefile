@@ -1,4 +1,4 @@
-OS = darwin freebsd linux openbsd windows
+OS = darwin linux openbsd windows
 ARCHS = 386 arm amd64 arm64
 
 all: build release
@@ -27,3 +27,7 @@ deps:
 clean:
 	rm -rf build
 	rm -f webhook
+
+cf-build:
+	GOARCH=amd64 GOOS=linux go build -o webhook_linux_amd64 
+
