@@ -12,6 +12,7 @@ import (
 	"os/exec"
 	"strings"
 	"time"
+	"strconv"
 
 	"github.com/adnanh/webhook/hook"
 
@@ -84,6 +85,8 @@ func main() {
 
 	log.SetPrefix("[webhook] ")
 	log.SetFlags(log.Ldate | log.Ltime)
+	// in CF, we would like to see output in STDOUT not STDERR
+	log.SetOutput(os.Stdout)
 
 	if !*verbose {
 		log.SetOutput(ioutil.Discard)
@@ -188,6 +191,15 @@ func main() {
 	router.HandleFunc(hooksURL, hookHandler)
 
 	n.UseHandler(router)
+
+	// port has to be set via envvar in CF
+	if os.Getenv("PORT") != "" {
+		var err error
+		*port, err = strconv.Atoi(os.Getenv("PORT"))
+		if err != nil {
+			log.Fatal("error: could not handle PORT")
+		}
+	}
 
 	if *secure {
 		log.Printf("serving hooks on https://%s:%d%s", *ip, *port, hooksURL)

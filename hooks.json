@@ -1,0 +1,21 @@
+[
+  {
+    "id": "cf",
+    "execute-command": "/home/vcap/app/script/sample.sh",
+    "response-message": "I got the payload!",
+    "response-headers":
+    [
+      {
+        "name": "Access-Control-Allow-Origin",
+        "value": "*"
+      }
+    ],
+    "pass-arguments-to-command":
+    [
+      {
+        "source": "payload",
+        "name": "sample"
+      }
+    ]
+  }
+]
